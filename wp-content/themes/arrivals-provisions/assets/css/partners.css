@@ -1,0 +1,174 @@
+/* ============================================================
+   partners.css — the For Partners page
+   ------------------------------------------------------------
+   Same architecture as hosts.css/services.css: bone ground the
+   whole way down (no theme-turn trigger element on this page — see
+   the note in services.css), page-specific file even where the
+   shape duplicates another page's CSS 1:1, .reviews/.review styles
+   shared from components.css. See handoff.md for the full rationale
+   behind this split.
+   ============================================================ */
+
+/* ---- banner ---------------------------------------------------- */
+.pagehero {
+  --pagehero-title-size: clamp(4rem, 15vw, 17rem);
+  padding-top: clamp(7rem, 16vh, 11rem);
+}
+
+.pagehero__head {
+  position: relative;
+  /* Without this, .pagehero__media paints on top of this block by
+     default DOM order (it comes later in the markup) — the photo
+     was covering the bottom of "PARTNERS" instead of the text
+     sitting in front of it. z-index here (needs position set to do
+     anything) flips that so the full heading stays legible, with
+     the image visible behind/around it rather than cutting into it. */
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-md);
+}
+
+.pagehero__title {
+  font-size: var(--pagehero-title-size);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--track-display);
+  text-transform: uppercase;
+}
+
+.pagehero__media {
+  position: relative;
+  /* "For Partners" wraps to two lines at every width this scales
+     across (both the heading and the shell it sits in move with vw
+     together), unlike Services'/Hosts' one-line titles — so this can
+     take a much heavier overlap than their 0.16 ratio without
+     slicing through the only line. Tuned to match the Marquet
+     reference directly: its second line ("CHEF") is roughly half
+     covered by the photo while the first line stays completely
+     clear. 0.16 here just grazed the bottom of "PARTNERS" — nowhere
+     near that. Verify this still targets the second line specifically
+     if the heading copy ever changes to something that stays on one
+     line at some widths. */
+  margin-top: calc(-0.62 * var(--pagehero-title-size));
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-radius: var(--radius);
+  background: var(--sand);
+}
+
+.pagehero__media img {
+  position: absolute;
+  top: -18%;
+  left: 0;
+  width: 100%;
+  height: 136%;
+  object-fit: cover;
+  will-change: transform;
+}
+
+.pagehero__intro {
+  margin-top: clamp(2rem, 5vh, 3.5rem);
+  font-size: var(--fs-lead);
+  color: var(--page-fg-mid);
+  max-width: 46ch;
+}
+
+@media (max-width: 900px) {
+  .pagehero__media { aspect-ratio: 4 / 5; }
+}
+
+
+/* ---- benefits --------------------------------------------------- */
+.benefits__grid {
+  margin-top: clamp(3rem, 7vh, 5rem);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(2.5rem, 5vw, 4.5rem) clamp(2rem, 4vw, 4rem);
+}
+
+.benefit__title {
+  font-size: var(--fs-d3);
+}
+
+.benefit__body {
+  margin-top: 0.75rem;
+  color: var(--page-fg-mid);
+  max-width: 42ch;
+}
+
+@media (max-width: 900px) {
+  .benefits__grid { grid-template-columns: 1fr; gap: var(--sp-xl); }
+}
+
+
+/* ---- process (How It Works, recapped for this page) ------------- */
+.process { padding-top: 0; }
+
+.process__grid {
+  list-style: none;
+  margin: clamp(3rem, 7vh, 5rem) 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(1.25rem, 2.4vw, 3rem);
+}
+
+.process__media {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  border-radius: var(--radius);
+  background: var(--sand);
+}
+
+.process__media img {
+  position: absolute;
+  top: -18%;
+  left: 0;
+  width: 100%;
+  height: 136%;
+  object-fit: cover;
+  will-change: transform;
+}
+
+.process__title {
+  margin-top: var(--sp-md);
+  font-size: var(--fs-d3);
+}
+
+.process__body {
+  margin-top: 0.6rem;
+  color: var(--page-fg-mid);
+}
+
+@media (max-width: 900px) {
+  .process__grid { grid-template-columns: 1fr; gap: var(--sp-xl); }
+}
+
+
+/* ---- portfolio CTA ------------------------------------------------
+   Points straight at Contact rather than Services' three fixed
+   packages — a forty-property portfolio or an FBO relationship reads
+   as a custom-terms conversation, not a $95/$185/$125 pick. */
+.portfolio-cta {
+  border-top: 1px solid var(--page-line);
+  border-bottom: 1px solid var(--page-line);
+  padding-block: clamp(3rem, 7vh, 5rem);
+}
+
+.portfolio-cta__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-lg);
+}
+
+.portfolio-cta__text { max-width: 46ch; }
+
+.portfolio-cta__title { font-size: var(--fs-d3); }
+
+.portfolio-cta__body {
+  margin-top: 0.6rem;
+  color: var(--page-fg-mid);
+}

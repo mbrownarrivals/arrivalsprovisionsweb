@@ -1,0 +1,79 @@
+/* ============================================================
+   error.css — the 404 page
+   ------------------------------------------------------------
+   Same architecture as the other inner pages: bone ground the
+   whole way down, page-specific file. This page is deliberately
+   simpler than the rest of the site — no banner photo, no scroll
+   sections — a utility screen whose only job is a fast way back,
+   not another moment to linger on.
+   ============================================================ */
+
+.error {
+  min-height: calc(100vh - 1px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding-block: clamp(6rem, 16vh, 10rem);
+}
+
+.error__code {
+  font-family: var(--font-display);
+  font-size: clamp(5rem, 15vw, 11rem);
+  line-height: 1;
+  letter-spacing: var(--track-display);
+  color: var(--page-fg-low);
+}
+
+.error__title {
+  margin-top: var(--sp-md);
+  font-size: var(--fs-d3);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--track-display);
+  text-transform: uppercase;
+  max-width: 20ch;
+}
+
+.error__body {
+  margin-top: var(--sp-md);
+  max-width: 40ch;
+  color: var(--page-fg-mid);
+}
+
+.error__actions {
+  margin-top: var(--sp-lg);
+}
+
+.error__links {
+  margin-top: clamp(2.5rem, 6vh, 4rem);
+  padding-top: clamp(2.5rem, 6vh, 4rem);
+  border-top: 1px solid var(--page-line);
+  width: min(100%, 34rem);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem 1.75rem;
+  font-size: var(--fs-small);
+}
+
+.error__links a {
+  position: relative;
+  padding-block: 0.2rem;
+  color: var(--page-fg-mid);
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+.error__links a::after {
+  content: "";
+  position: absolute;
+  left: 0; bottom: 0;
+  width: 100%; height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.5s var(--ease-out);
+}
+
+.error__links a:hover { color: var(--clay); }
+.error__links a:hover::after { transform: scaleX(1); transform-origin: left; }

@@ -1,0 +1,19 @@
+/*
+Theme Name:  Arrivals Provisions
+Theme URI:   https://arrivalsprovisions.com
+Author:      Arrivals Provisions
+Description: Custom WordPress theme, lossless port of the static Arrivals Provisions
+             marketing site. Requires ACF Pro. No page builder, no block layouts —
+             plain PHP templates that output the exact original markup, styled by the
+             exact original CSS files (see assets/css/), driven by ACF field data with
+             the original hard-coded content as fallback. See README.md for setup.
+Version:     1.0.0
+Requires PHP: 7.4
+Text Domain: arrivals-provisions
+
+This file intentionally holds ONLY the WordPress theme header above (WordPress
+requires it here to recognise the theme). None of the site's actual visual CSS lives
+in this file — it is enqueued unchanged from assets/css/*.css in functions.php, in the
+same order and under the same file names as the static site's <link> tags, so nothing
+about the design, cascade or specificity changes by moving it into WordPress.
+*/

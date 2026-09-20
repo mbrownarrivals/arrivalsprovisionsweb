@@ -1,0 +1,309 @@
+/* ============================================================
+   story.css — the Our Story page
+   ------------------------------------------------------------
+   Same architecture as services.css/hosts.css/partners.css: bone
+   ground the whole way down, page-specific file even where a shape
+   duplicates another page's CSS. See handoff.md.
+
+   Layout on this page is adapted from the Marquet about-us
+   reference (founder-name-as-hero heading, offset contained
+   portrait rather than a full-bleed banner, a divider rule, a
+   centred intro line, a separate bio section, an isolated single-
+   image break, a centred closing CTA) — structure only. Copy,
+   photos, and the specific bespoke image-woven-through-giant-type
+   treatment on their page are not reproduced; that's a distinctive
+   enough creative signature of theirs that copying it exactly
+   would be copying their design, not just taking structural cues.
+   ============================================================ */
+
+/* ---- hero ---------------------------------------------------- */
+.hero-story {
+  padding-top: clamp(7rem, 16vh, 11rem);
+}
+
+.hero-story__row {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+  gap: clamp(2.5rem, 6vw, 6rem);
+  align-items: center;
+}
+
+.hero-story__name {
+  font-size: clamp(3rem, 7.5vw, 8rem);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--track-display);
+  text-transform: uppercase;
+}
+
+.hero-story__rule {
+  margin-top: clamp(1.5rem, 3vh, 2.25rem);
+  border: none;
+  border-top: 1px solid var(--page-line);
+}
+
+.hero-story__intro {
+  margin-top: clamp(1.5rem, 3vh, 2.25rem);
+  font-size: var(--fs-lead);
+  color: var(--page-fg-mid);
+  max-width: 46ch;
+}
+
+.hero-story__media {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  border-radius: var(--radius);
+  background: var(--sand);
+}
+
+.hero-story__media img {
+  position: absolute;
+  top: -5%;
+  left: 0;
+  width: 100%;
+  height: 110%;
+  object-fit: cover;
+  object-position: center 0%;
+  will-change: transform;
+}
+
+@media (max-width: 900px) {
+  .hero-story__row { grid-template-columns: 1fr; gap: var(--sp-xl); }
+  .hero-story__media { order: -1; aspect-ratio: 4 / 5; max-width: 22rem; }
+}
+
+
+/* ---- founder bio ------------------------------------------------
+   Big section heading, narrow column of short paragraphs, a second
+   (smaller) offset photo lower on the right — echoes the reference's
+   chef-bio section without its exact 3-photo strip. */
+.bio__row {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+  gap: clamp(2.5rem, 6vw, 6rem);
+  align-items: start;
+}
+
+.bio__copy {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-md);
+  max-width: 40rem;
+}
+
+.bio__copy p { color: var(--page-fg-mid); }
+
+.bio__media {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  border-radius: var(--radius);
+  background: var(--sand);
+  margin-top: clamp(2rem, 8vh, 6rem);
+}
+
+.bio__media img {
+  position: absolute;
+  top: -18%;
+  left: 0;
+  width: 100%;
+  height: 136%;
+  object-fit: cover;
+  will-change: transform;
+}
+
+@media (max-width: 900px) {
+  .bio__row { grid-template-columns: 1fr; gap: var(--sp-lg); }
+  .bio__media { margin-top: 0; }
+}
+
+
+/* ---- roots (place + photo) ---------------------------------------
+   Same image+body two-column shape used across the inner pages. */
+.roots__row {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: clamp(2rem, 4.5vw, 5.5rem);
+  align-items: center;
+}
+
+.roots__media {
+  position: relative;
+  aspect-ratio: 5 / 4;
+  overflow: hidden;
+  border-radius: var(--radius);
+  background: var(--sand);
+}
+
+.roots__media img {
+  position: absolute;
+  top: -18%;
+  left: 0;
+  width: 100%;
+  height: 136%;
+  object-fit: cover;
+  will-change: transform;
+}
+
+.roots__body {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--sp-md);
+  max-width: 44ch;
+}
+
+.roots__body p { color: var(--page-fg-mid); }
+
+@media (max-width: 900px) {
+  .roots__row { grid-template-columns: 1fr; gap: var(--sp-lg); }
+}
+
+
+/* ---- core values ---------------------------------------------------
+   Reworked after a closer look at the reference: its values section
+   is a divided row list (a big word on the left, a short line on the
+   right, hairline rules between rows), not a card grid. That row-list
+   idiom is already exactly how .reviews/.review works elsewhere on
+   this site (see components.css), so this reuses that same shape
+   rather than inventing a new one. Dark background on the reference's
+   own values section was NOT carried over — this site has exactly
+   one place the ground turns from light to dark (see handoff.md),
+   and a one-off dark section here would break that rule for no real
+   gain.
+
+   The hover-reveals-a-photo interaction WAS added (see .value__media
+   below), on request. Deliberately not the same mechanism as the
+   reviews hover card (js/reviews.js), which follows the cursor
+   anywhere on screen — the reference's photo sits in one fixed spot
+   per row, centred over the divider between the label and the
+   description, so this is plain CSS opacity/scale on :hover and
+   :focus-within, no JS needed. */
+.values__list {
+  margin-top: clamp(3rem, 7vh, 5rem);
+  list-style: none;
+  margin-inline: 0;
+  padding: 0;
+  border-top: 1px solid var(--page-line);
+}
+
+.value {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: clamp(1rem, 3vw, 3rem);
+  padding-block: clamp(1.25rem, 3.5vh, 2.25rem);
+  border-bottom: 1px solid var(--page-line);
+}
+
+.value__name {
+  position: relative;
+  z-index: 2;
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 4vw, 3.5rem);
+  letter-spacing: var(--track-display);
+}
+
+.value__media {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 1;
+  width: clamp(150px, 15vw, 240px);
+  aspect-ratio: 1;
+  border-radius: 999px;
+  overflow: hidden;
+  background: var(--sand);
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.9);
+  transition: opacity 0.4s var(--ease-out), transform 0.4s var(--ease-out);
+  pointer-events: none;
+}
+
+.value__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.value:hover .value__media,
+.value:focus-within .value__media {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+/* No hover on touch — the photo would have no way to appear without
+   a tap that does nothing else, so it stays out of the layout
+   entirely rather than sitting permanently hidden with dead space
+   around it. The text alone already carries the full meaning. */
+@media (hover: none) {
+  .value__media { display: none; }
+}
+
+.value__desc {
+  flex: 1 1 24rem;
+  max-width: 34ch;
+  color: var(--page-fg-mid);
+}
+
+@media (max-width: 560px) {
+  .values__grid { grid-template-columns: 1fr; }
+}
+
+
+/* ---- isolated image break ------------------------------------------
+   One medium, centred, portrait-oriented photo with real whitespace
+   around it — NOT full-bleed like home's Brand Statement or
+   Services'/Partners' atmosphere bands. Echoes the reference's own
+   single-image breathing-room break, which is also a contained
+   frame rather than an edge-to-edge bleed. */
+.aside {
+  display: flex;
+  justify-content: center;
+}
+
+.aside__media {
+  position: relative;
+  width: min(100%, 34rem);
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  border-radius: var(--radius);
+  background: var(--sand);
+}
+
+.aside__media img {
+  position: absolute;
+  top: -18%;
+  left: 0;
+  width: 100%;
+  height: 136%;
+  object-fit: cover;
+  will-change: transform;
+}
+
+
+/* ---- closing CTA ----------------------------------------------------
+   Centred, matching the reference's centred CTA pattern — this
+   page's own close, distinct from the footer's below it. */
+.closing-cta {
+  text-align: center;
+}
+
+.closing-cta__title {
+  max-width: 30ch;
+  margin-inline: auto;
+}
+
+.closing-cta__body {
+  margin: var(--sp-md) auto 0;
+  max-width: 42ch;
+  color: var(--page-fg-mid);
+}
+
+.closing-cta__actions {
+  margin-top: var(--sp-lg);
+  display: flex;
+  justify-content: center;
+}

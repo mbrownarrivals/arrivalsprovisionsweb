@@ -1,0 +1,77 @@
+/* ============================================================
+   fonts.css — Moranga (headings)
+   ------------------------------------------------------------
+   Moranga is a commercial face from Latinotype. It is NOT on
+   Google Fonts and cannot be loaded from a free CDN, so the files
+   have to come from your licence.
+
+   TWO WAYS TO SUPPLY IT — pick one.
+
+   1. SELF-HOSTED (what the rules below expect)
+      Drop the web files into  assets/fonts/  using exactly these
+      names, and the site picks them up with no other change:
+
+        assets/fonts/Moranga-Regular.woff2
+        assets/fonts/Moranga-Medium.woff2
+        assets/fonts/Moranga-Bold.woff2
+
+      A desktop licence usually ships .otf/.ttf only — those are a
+      webfont licence short. Convert the licensed webfont files, do
+      not convert desktop files you are not licensed to serve.
+
+   2. ADOBE FONTS
+      Moranga is on Adobe Fonts. Make a web project, then add the
+      kit stylesheet to the <head> of every page:
+
+        <link rel="stylesheet" href="https://use.typekit.net/XXXXXXX.css">
+
+      and delete the @font-face rules below — the kit declares its
+      own. The family name stays "moranga" (Adobe lowercases it),
+      which the token stack already covers.
+
+   Until either lands, headings fall back to Instrument Serif so the
+   page keeps its editorial look instead of dropping to Arial. See
+   the note in tokens.css.
+   ============================================================ */
+
+/* The local() entries come first on purpose. Declaring @font-face for
+   a family SHADOWS any copy installed on the machine — without these
+   lines, a designer with Moranga installed would still see the
+   fallback, because the browser would only look at the URLs. With
+   them, an OS install is used straight away and no request is made.
+   local() only helps whoever has it installed; visitors still need
+   the hosted files. */
+
+@font-face {
+  font-family: "Moranga";
+  src: local("Moranga"),
+       local("Moranga Regular"),
+       local("Moranga-Regular"),
+       url("/wp-content/themes/arrivals-provisions/assets/fonts/Moranga-Regular.woff2") format("woff2"),
+       url("/wp-content/themes/arrivals-provisions/assets/fonts/Moranga-Regular.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Moranga";
+  src: local("Moranga Medium"),
+       local("Moranga-Medium"),
+       url("/wp-content/themes/arrivals-provisions/assets/fonts/Moranga-Medium.woff2") format("woff2"),
+       url("/wp-content/themes/arrivals-provisions/assets/fonts/Moranga-Medium.woff") format("woff");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Moranga";
+  src: local("Moranga Bold"),
+       local("Moranga-Bold"),
+       url("/wp-content/themes/arrivals-provisions/assets/fonts/Moranga-Bold.woff2") format("woff2"),
+       url("/wp-content/themes/arrivals-provisions/assets/fonts/Moranga-Bold.woff") format("woff");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}

@@ -1,0 +1,226 @@
+/* ============================================================
+   Base — reset, typography, layout primitives
+   ============================================================ */
+
+:root {
+    --fs-dx: 2rem;
+}
+
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: auto;           /* Lenis owns scrolling */
+}
+
+body {
+  margin: 0;
+  background: var(--page-bg);
+  color: var(--page-fg);
+  font-family: var(--font-body);
+  font-size: var(--fs-body);
+  font-weight: 300;
+  line-height: var(--lh-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* Lenis */
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-stopped { overflow: hidden; }
+
+body.is-locked { overflow: hidden; }
+
+h1, h2, h3, h4 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 400;
+  line-height: var(--lh-snug);
+  letter-spacing: var(--track-tight);
+}
+
+/* Everything set in the display face. Currently only carries variable
+   axes (inert under Cinzel), but it is also the list to check when the
+   heading font changes. */
+h1, h2, h3, h4,
+.hero__word, .hero__tagline, .svc__index, .step__title,
+.review__name,
+.footer__cta, .footer__tag, .footer__name, .nav__logo, .menu__inner a,
+.menu__foot {
+  font-variation-settings: var(--display-variations);
+}
+
+p { margin: 0; }
+
+img, svg, video {
+  display: block;
+  max-width: 100%;
+}
+
+a { color: inherit; text-decoration: none; }
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+}
+
+blockquote { margin: 0; }
+
+::selection { background: var(--clay); color: var(--paper); }
+
+
+/* ---- layout primitives ------------------------------------- */
+
+.shell {
+  width: 100%;
+  max-width: var(--shell);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.shell--narrow { max-width: var(--shell-narrow); }
+
+.section {
+  position: relative;
+  padding-block: var(--sp-section);
+}
+
+.section__head {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-md);
+  /* No cap of its own — uses the full shell measure.
+
+     It used to be capped at 58rem, tuned for --fs-d2's OLD, smaller
+     size. Once every section heading was unified to How It Works'
+     much larger size, that cap started genuinely CLIPPING text: a
+     single word ("standard.") rendered wider than the 928px column
+     at the new font-size, and .line's overflow:hidden sliced off its
+     final letter — "STANDARD" read as "STANDAR". Cinzel's capitals
+     are wide; a long word at a huge size needs real room.
+
+     At the full shell width there's no clipping at any tested
+     viewport (swept 360–1920), but the line count this heading
+     wraps to is no longer fixed at 2 — it's 2 at ~1920, 3 in the
+     middle of the range, 4 below ~460px. That's an honest side effect
+     of the phrase being longer than "How It Works": matching SIZE
+     across headings of different length cannot also guarantee an
+     identical line SHAPE. If a fixed 2-line break matters more than
+     matching size exactly, the fix is shortening the heading text,
+     not re-narrowing this container. */
+  margin-bottom: var(--sp-xl);
+}
+
+.section__head .h2 { text-wrap: balance; }
+
+
+/* ---- type primitives --------------------------------------- */
+
+.h2 { font-size: var(--fs-d2); }
+.h3 { font-size: var(--fs-d3); }
+
+/* Inter, uppercase, wide-tracked. No leading rule — the little dash
+   in front of a label is decoration that earns nothing. */
+.eyebrow {
+  font-family: var(--font-body);
+  font-size: var(--fs-micro);
+  font-weight: 500;
+  letter-spacing: var(--track-eyebrow);
+  text-transform: uppercase;
+  color: var(--page-fg-low);
+}
+
+.eyebrow--light { color: var(--page-fg-low); }
+
+
+/* ---- reveal primitives (JS adds .is-in) -------------------- */
+
+[data-reveal] {
+  opacity: 0;
+  transform: translate3d(0, 1.4rem, 0);
+  transition:
+    opacity var(--dur) var(--ease-out),
+    transform var(--dur) var(--ease-out);
+}
+
+[data-reveal].is-in {
+  opacity: 1;
+  transform: none;
+}
+
+/* Measurement spans used by js/split.js. nowrap stops the browser
+   breaking inside a hyphenated word ("in-property"), which would
+   otherwise put half a word on its own line after the split. */
+[data-w] { white-space: nowrap; }
+
+/* line-split masks, built by js/split.js
+   The padding/margin pair keeps descenders (g, y, p) out of the clip. */
+.line {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.14em;
+  margin-bottom: -0.14em;
+}
+
+.line__inner {
+  display: block;
+  transform: translate3d(0, 105%, 0);
+  transition:
+    transform 1s var(--ease-out),
+    opacity 1s var(--ease-out);
+  opacity: 0;
+}
+
+.is-in .line__inner { transform: none; opacity: 1; }
+
+/* stagger */
+.line:nth-child(1) .line__inner { transition-delay: 0.00s; }
+.line:nth-child(2) .line__inner { transition-delay: 0.07s; }
+.line:nth-child(3) .line__inner { transition-delay: 0.14s; }
+.line:nth-child(4) .line__inner { transition-delay: 0.21s; }
+.line:nth-child(5) .line__inner { transition-delay: 0.28s; }
+.line:nth-child(6) .line__inner { transition-delay: 0.35s; }
+.line:nth-child(7)  .line__inner { transition-delay: 0.42s; }
+.line:nth-child(8)  .line__inner { transition-delay: 0.49s; }
+.line:nth-child(9)  .line__inner { transition-delay: 0.56s; }
+.line:nth-child(10) .line__inner { transition-delay: 0.63s; }
+.line:nth-child(11) .line__inner { transition-delay: 0.70s; }
+.line:nth-child(12) .line__inner { transition-delay: 0.77s; }
+.line:nth-child(13) .line__inner { transition-delay: 0.84s; }
+.line:nth-child(14) .line__inner { transition-delay: 0.91s; }
+.line:nth-child(15) .line__inner { transition-delay: 0.98s; }
+.line:nth-child(16) .line__inner { transition-delay: 1.05s; }
+
+/* clip reveal for images */
+[data-clip] {
+  clip-path: inset(0 0 100% 0);
+  transition: clip-path 1.35s var(--ease-out);
+}
+
+[data-clip].is-in { clip-path: inset(0 0 0% 0); }
+
+
+/* ---- accessibility ----------------------------------------- */
+
+:focus-visible {
+  outline: 2px solid var(--clay);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+  [data-reveal], .line__inner { opacity: 1 !important; transform: none !important; }
+  [data-clip] { clip-path: none !important; }
+  .cursor, .grain { display: none !important; }
+}

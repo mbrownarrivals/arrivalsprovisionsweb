@@ -1,0 +1,349 @@
+/* ============================================================
+   services.css — the Services page
+   ------------------------------------------------------------
+   This page stays on the bone ground the whole way down — it has
+   no .founder__figure--turn or .statement element, so js/theme.js
+   finds nothing to trigger on and never turns the --page-* tokens
+   to night (see theme.js: `if (!turn) return;`). Nav and footer
+   both already read from those same tokens, so they render in
+   their light state automatically — no separate "light footer"
+   variant needed anywhere.
+
+   Page-specific only. Tokens, nav, footer, buttons, cursor, grain,
+   curtain all come from tokens.css / base.css / components.css,
+   same as home. Deliberately does NOT reuse home.css's .svc/.svc__*
+   classes even though the shape is similar — new pages are meant to
+   stand alone from home.css, per the "page-agnostic primitives,
+   page-specific sections" split. See handoff.md.
+   ============================================================ */
+
+/* ---- banner --------------------------------------------------
+   Eyebrow, a big title, a photo overlapping its bottom edge, then
+   the intro line below the photo — matching the Marquet reference's
+   own order (title → photo → statement line). Title size is a CSS
+   variable (--pagehero-title-size) rather than a bare value on
+   .pagehero__title, because the photo's overlap margin needs to
+   scale with it exactly — computing the overlap against a font-size
+   that can silently drift out of sync with the heading was exactly
+   how the first attempt broke (overlap tuned for one size, heading
+   changed to a bigger one, nobody re-checked the ratio). One
+   variable, read in both places, makes that impossible. */
+.pagehero {
+  --pagehero-title-size: clamp(4rem, 15vw, 17rem);
+  padding-top: clamp(7rem, 16vh, 11rem);
+}
+
+.pagehero__head {
+  position: relative;
+  /* Without this, .pagehero__media paints on top of this block by
+     default DOM order (it comes later in the markup) — the photo
+     was covering the bottom of the heading instead of the text
+     sitting in front of it. z-index here (needs position set to do
+     anything) flips that so the heading stays fully legible, with
+     the image visible behind/around it rather than cutting into it. */
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-md);
+}
+
+.pagehero__title {
+  /* --fs-hero (12.5rem cap) reads noticeably smaller than the
+     reference's title, which runs closer to edge-to-edge — this page
+     only ever has one short word here, so it has more room to grow
+     before wrapping becomes a risk the way home's two-word
+     "Arrivals / Provisions" wordmark does. */
+  font-size: var(--pagehero-title-size);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--track-display);
+  text-transform: uppercase;
+}
+
+.pagehero__media {
+  position: relative;
+  /* Grazes just the bottom edge of the heading's descenders — same
+     0.16 ratio verified against the smaller --fs-d1 heading in the
+     first version, now correctly scaled to --pagehero-title-size
+     instead of silently pointing at the old, now-unused token. */
+  margin-top: calc(-0.16 * var(--pagehero-title-size));
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-radius: var(--radius);
+  background: var(--sand);
+}
+
+.pagehero__media img {
+  position: absolute;
+  top: -18%;
+  left: 0;
+  width: 100%;
+  height: 136%;
+  object-fit: cover;
+  will-change: transform;
+}
+
+.pagehero__intro {
+  margin-top: clamp(2rem, 5vh, 3.5rem);
+  font-size: var(--fs-lead);
+  color: var(--page-fg-mid);
+  max-width: 46ch;
+}
+
+@media (max-width: 900px) {
+  .pagehero__media { aspect-ratio: 4 / 5; }
+}
+
+
+/* ---- process (How It Works, recapped for this page) -----------
+   Same 3-column shape as home's .how__list, own class names per
+   the file header note. Reuses the exact same three steps as
+   home's How It Works section — this page is where a host actually
+   decides to book, so repeating the process here (not just on
+   home) removes a reason to click away before converting. */
+.process { padding-top: 0; }
+
+.process__grid {
+  list-style: none;
+  margin: clamp(3rem, 7vh, 5rem) 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(1.25rem, 2.4vw, 3rem);
+}
+
+.process__media {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  border-radius: var(--radius);
+  background: var(--sand);
+}
+
+.process__media img {
+  position: absolute;
+  top: -18%;
+  left: 0;
+  width: 100%;
+  height: 136%;
+  object-fit: cover;
+  will-change: transform;
+}
+
+.process__title {
+  margin-top: var(--sp-md);
+  font-size: var(--fs-d3);
+}
+
+.process__body {
+  margin-top: 0.6rem;
+  color: var(--page-fg-mid);
+}
+
+@media (max-width: 900px) {
+  .process__grid { grid-template-columns: 1fr; gap: var(--sp-xl); }
+}
+
+
+/* ---- snapshots --------------------------------------------------
+   Two extra photos, side by side, no heading or copy — a quiet
+   beat between the minibar deep-dive and the atmosphere band. See
+   the note in services.html on why these are plain <img src>
+   rather than going through config.js. */
+.snapshots { padding-block: 0 clamp(3rem, 8vh, 6rem); }
+
+.snapshots__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(1rem, 2.4vw, 2rem);
+}
+
+.snapshots__item {
+  position: relative;
+  margin: 0;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  border-radius: var(--radius);
+  background: var(--sand);
+}
+
+.snapshots__item img {
+  position: absolute;
+  top: -18%;
+  left: 0;
+  width: 100%;
+  height: 136%;
+  object-fit: cover;
+  will-change: transform;
+}
+
+@media (max-width: 900px) {
+  .snapshots__grid { grid-template-columns: 1fr; gap: var(--sp-lg); }
+}
+
+
+/* ---- atmosphere -------------------------------------------------
+   A full-bleed breathing-room photo between the service deep-dives
+   and pricing — this page was previously a stack of cards and text
+   the whole way down with no moment to just look at something, the
+   one thing the Marquet reference had that this page didn't. Real
+   photography, not a new placeholder: one of the actual Locations
+   We Serve photos (assets/images/Location we serve/zion.jpg),
+   referenced directly rather than through the data-img alias
+   system, same reasoning as that carousel — see home's README. */
+.atmosphere {
+  position: relative;
+  height: 78vh;
+  min-height: 34rem;
+  overflow: hidden;
+}
+
+.atmosphere__media {
+  position: absolute;
+  inset: 0;
+}
+
+.atmosphere__media img {
+  position: absolute;
+  top: -18%;
+  left: 0;
+  width: 100%;
+  height: 136%;
+  object-fit: cover;
+  will-change: transform;
+}
+
+
+/* ---- service deep-dive rows -----------------------------------
+   Same visual shape as home's .svc (image + body, alternating
+   sides) but its own class names — see file header. */
+.detail { padding-block: clamp(4rem, 10vh, 8rem); }
+
+.detail__row {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: clamp(2rem, 4.5vw, 5.5rem);
+  align-items: center;
+}
+
+.detail--offset .detail__media { order: 2; }
+.detail--offset .detail__body  { order: 1; }
+
+.detail__media {
+  position: relative;
+  aspect-ratio: 5 / 4;
+  overflow: hidden;
+  border-radius: var(--radius);
+  background: var(--sand);
+}
+
+.detail__media img {
+  position: absolute;
+  top: -18%;
+  left: 0;
+  width: 100%;
+  height: 136%;
+  object-fit: cover;
+  will-change: transform;
+}
+
+.detail__body {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--sp-md);
+  max-width: 46ch;
+}
+
+.detail__index {
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 5vw, 5rem);
+  line-height: 1;
+  color: var(--clay);
+  opacity: 0.32;
+}
+
+.detail__body p { color: var(--page-fg-mid); }
+
+.detail__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  color: var(--page-fg-mid);
+  font-size: var(--fs-small);
+}
+
+.detail__list li {
+  position: relative;
+  padding-left: 1.4rem;
+}
+
+.detail__list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.6em;
+  width: 6px;
+  height: 1px;
+  background: var(--clay);
+}
+
+.detail__body .link { margin-top: var(--sp-sm); }
+
+@media (max-width: 900px) {
+  .detail__row { grid-template-columns: 1fr; gap: var(--sp-lg); }
+  .detail--offset .detail__media { order: 0; }
+  .detail--offset .detail__body  { order: 0; }
+}
+
+
+/* ---- pricing --------------------------------------------------
+   Three tiers, a hairline-bordered card each — no shadow, no
+   gradient, matching the flat/inscriptional treatment used
+   everywhere else on the site. */
+.pricing { padding-top: 0; }
+
+.pricing__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(1.25rem, 2.4vw, 2rem);
+  margin-top: clamp(3rem, 7vh, 5rem);
+}
+
+.price-card {
+  border: 1px solid var(--page-line);
+  border-radius: var(--radius);
+  padding: clamp(2rem, 3.5vw, 2.75rem);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-md);
+}
+
+.price-card__tier {
+  font-family: var(--font-body);
+  font-size: var(--fs-micro);
+  letter-spacing: var(--track-eyebrow);
+  text-transform: uppercase;
+  color: var(--page-fg-low);
+}
+
+.price-card__desc {
+  color: var(--page-fg-mid);
+  font-size: var(--fs-small);
+}
+
+.price-card .btn {
+  margin-top: 0.5rem;
+}
+
+.pricing__note {
+  margin-top: clamp(1.5rem, 3vh, 2.25rem);
+  font-size: var(--fs-small);
+  color: var(--page-fg-low);
+}
+
+@media (max-width: 900px) {
+  .pricing__grid { grid-template-columns: 1fr; }
+}

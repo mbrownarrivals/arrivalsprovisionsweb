@@ -1,0 +1,247 @@
+/* ============================================================
+   contact.css — the Contact page
+   ------------------------------------------------------------
+   Same architecture as the other inner pages: bone ground the
+   whole way down, page-specific file, z-index fix on the banner
+   heading built in from the start. See handoff.md.
+   ============================================================ */
+
+/* ---- banner ---------------------------------------------------- */
+.pagehero {
+  --pagehero-title-size: clamp(4rem, 15vw, 17rem);
+  padding-top: clamp(7rem, 16vh, 11rem);
+}
+
+.pagehero__head {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-md);
+}
+
+.pagehero__title {
+  font-size: var(--pagehero-title-size);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--track-display);
+  text-transform: uppercase;
+}
+
+.pagehero__media {
+  position: relative;
+  margin-top: calc(-0.16 * var(--pagehero-title-size));
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-radius: var(--radius);
+  background: var(--sand);
+}
+
+.pagehero__media img {
+  position: absolute;
+  top: -18%;
+  left: 0;
+  width: 100%;
+  height: 136%;
+  object-fit: cover;
+  will-change: transform;
+}
+
+.pagehero__intro {
+  margin-top: clamp(2rem, 5vh, 3.5rem);
+  font-size: var(--fs-lead);
+  color: var(--page-fg-mid);
+  max-width: 46ch;
+}
+
+@media (max-width: 900px) {
+  .pagehero__media { aspect-ratio: 4 / 5; }
+}
+
+
+/* ---- form section ------------------------------------------------ */
+.reach { padding-top: 0; }
+
+.reach__row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr);
+  gap: clamp(2.5rem, 6vw, 6rem);
+  align-items: start;
+}
+
+.reach__aside p { color: var(--page-fg-mid); }
+
+.reach__direct {
+  margin-top: var(--sp-lg);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.reach__direct a {
+  font-weight: 500;
+  color: var(--page-fg);
+  border-bottom: 1px solid var(--page-line);
+  padding-bottom: 1px;
+  align-self: flex-start;
+  transition: color var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out);
+}
+
+.reach__direct a:hover { color: var(--clay); border-color: var(--clay); }
+
+@media (max-width: 900px) {
+  .reach__row { grid-template-columns: 1fr; gap: var(--sp-xl); }
+}
+
+
+/* ---- role select ---------------------------------------------------
+   Three big pill options standing in for radio buttons — the input
+   itself is visually hidden (not display:none, so it stays in the
+   accessibility tree and keyboard-focusable) and its checked state
+   styles the visible <span> pill next to it. */
+.role-select {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.role-option {
+  position: relative;
+  cursor: pointer;
+}
+
+.role-option input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  margin: 0;
+  cursor: pointer;
+}
+
+.role-option span {
+  display: inline-flex;
+  padding: 0.85rem 1.75rem;
+  border-radius: 999px;
+  border: 1px solid var(--page-fg);
+  font-size: var(--fs-small);
+  transition: background-color var(--dur-fast) var(--ease-out),
+              color var(--dur-fast) var(--ease-out);
+}
+
+.role-option input:checked + span {
+  background: var(--page-fg);
+  color: var(--page-bg);
+}
+
+.role-option input:focus-visible + span {
+  outline: 2px solid var(--clay);
+  outline-offset: 3px;
+}
+
+
+/* ---- fields --------------------------------------------------------
+   Underlined, not boxed — matches the site's flat, restrained
+   treatment (no card chrome around form controls). */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.field label {
+  font-size: var(--fs-micro);
+  letter-spacing: var(--track-eyebrow);
+  text-transform: uppercase;
+  color: var(--page-fg-low);
+}
+
+.field input,
+.field select,
+.field textarea {
+  font-family: var(--font-body);
+  font-size: var(--fs-body);
+  color: var(--page-fg);
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--page-line);
+  border-radius: 0;
+  padding-block: 0.7rem;
+  appearance: none;
+  transition: border-color var(--dur-fast) var(--ease-out);
+}
+
+.field select {
+  background-image: linear-gradient(45deg, transparent 50%, currentColor 50%),
+                     linear-gradient(135deg, currentColor 50%, transparent 50%);
+  background-position: right 0.4rem top 55%, right 0.1rem top 55%;
+  background-size: 6px 6px, 6px 6px;
+  background-repeat: no-repeat;
+  color: var(--page-fg);
+}
+
+.field textarea { resize: vertical; min-height: 7rem; }
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+  outline: none;
+  border-color: var(--page-fg);
+}
+
+.form-grid {
+  margin-top: clamp(2.5rem, 6vh, 4rem);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(1.5rem, 3vw, 2.25rem);
+}
+
+.form-grid--full { grid-template-columns: 1fr; }
+
+.field--span2 { grid-column: 1 / -1; }
+
+@media (max-width: 640px) {
+  .form-grid { grid-template-columns: 1fr; }
+}
+
+/* Role-specific field groups — hidden by default, revealed with a
+   pure-CSS :has() check on which radio is checked. No JS required
+   for this part: the whole conditional-fields behaviour works with
+   JavaScript off, since :has() and :checked are just CSS. The
+   grid-template-rows 0fr → 1fr trick animates height without a fixed
+   pixel value (auto height can't be transitioned directly). */
+.conditional {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transition: grid-template-rows 0.5s var(--ease-out), opacity 0.4s var(--ease-out);
+}
+
+.conditional > div { overflow: hidden; min-height: 0; }
+
+form:has(#role-host:checked) .conditional--host,
+form:has(#role-partner:checked) .conditional--partner {
+  grid-template-rows: 1fr;
+  opacity: 1;
+}
+
+.conditional__inner {
+  padding-top: clamp(1.5rem, 4vh, 2.5rem);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(1.5rem, 3vw, 2.25rem);
+}
+
+@media (max-width: 640px) {
+  .conditional__inner { grid-template-columns: 1fr; }
+}
+
+.form-actions {
+  margin-top: clamp(2.5rem, 6vh, 4rem);
+  display: flex;
+  align-items: center;
+  gap: var(--sp-md);
+}
+
+.form-status {
+  font-size: var(--fs-small);
+  color: var(--page-fg-mid);
+}

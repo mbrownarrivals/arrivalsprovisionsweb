@@ -1,0 +1,660 @@
+/* ============================================================
+   Home page sections
+   ============================================================ */
+
+/* ============================================================
+   01 — HERO · the doorway
+   ============================================================ */
+
+.hero {
+  position: relative;
+  height: 300vh;                 /* scroll distance for the pass-through */
+}
+
+.hero__stage {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(120% 90% at 50% 40%, #F7F3EC 0%, var(--bone) 45%, #E7E0D3 100%);
+}
+
+/* the arched opening ---------------------------------------- */
+.hero__aperture {
+  position: relative;
+  width: clamp(178px, 23vw, 330px);
+  height: 56vh;
+  border-radius: var(--arch);
+  overflow: hidden;
+  will-change: width, height, border-radius;
+  box-shadow:
+    0 30px 64px -34px rgba(28, 25, 23, 0.5),
+    inset 0 0 0 1px rgba(28, 25, 23, 0.06);
+}
+
+.hero__media {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100vw;
+  height: 100vh;
+  transform: translate(-50%, -50%);
+}
+
+/* the scene itself — GSAP owns this transform for the push-in */
+.hero__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1.28);
+  will-change: transform;
+  background: var(--dune);
+}
+
+.hero__scrim {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(28, 25, 23, 0.42) 0%,
+    rgba(28, 25, 23, 0.12) 38%,
+    rgba(28, 25, 23, 0.62) 100%
+  );
+}
+
+/* wordmark framing the door --------------------------------- */
+.hero__front {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  padding: clamp(5.5rem, 13vh, 9rem) var(--gutter) clamp(4rem, 11vh, 7rem);
+  pointer-events: none;
+  text-align: center;
+}
+
+/* the wordmark splits around the doorway: one word above, one below */
+.hero__title {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin: 0;
+}
+
+.hero__word {
+  display: block;
+  font-family: var(--font-display);
+  font-size: clamp(2.9rem, 10vw, 10.5rem);
+  line-height: 0.86;
+  letter-spacing: var(--track-display);
+  color: var(--ink);
+  will-change: transform, opacity;
+}
+
+.hero__tagline {
+  position: absolute;
+  left: var(--gutter);
+  bottom: clamp(1.75rem, 4vh, 3rem);
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: clamp(1.15rem, 1.65vw, 1.6rem);
+  color: var(--clay);
+  text-align: left;
+}
+
+/* copy revealed on the far side of the door ------------------ */
+.hero__through {
+  position: absolute;
+  z-index: 6;
+  /* Centred by flex on a full-bleed overlay — deliberately NOT by
+     transform or by the independent `translate` property.
+
+     GSAP animates this element's y, so it owns `transform`, and it
+     folds `translate`/`rotate`/`scale` into that same cache (it writes
+     `translate: none` inline when it does). Either way a -50% centring
+     ends up frozen as a pixel offset taken at one moment, and this
+     element's width is min(56ch, 84vw) — it changes on font load and
+     on resize. The stale offset pushed the copy 59px right of centre
+     at 1920 while looking perfect at 1600. With flex centring there is
+     nothing for GSAP to capture and nothing to go stale. */
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-lg);
+  padding-inline: var(--gutter);
+  text-align: center;
+  color: var(--paper);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.hero__through.is-live { pointer-events: auto; }
+
+.hero__statement {
+  max-width: min(56ch, 84vw);
+  font-size: var(--fs-lead);
+  line-height: 1.6;
+  font-weight: 300;
+  text-shadow: 0 1px 24px rgba(28, 25, 23, 0.35);
+}
+
+.hero__cue {
+  position: absolute;
+  right: var(--gutter);
+  bottom: clamp(1.75rem, 4vh, 3rem);
+  z-index: 6;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: var(--fs-micro);
+  letter-spacing: var(--track-eyebrow);
+  text-transform: uppercase;
+  color: var(--stone);
+}
+
+/* The animated dash that used to sit beside "Scroll" is gone —
+   the word does the job on its own. */
+
+@media (max-width: 760px) {
+  .hero { height: 300vh; }
+  .hero__aperture { width: 54vw; height: 44vh; }
+  .hero__cue { display: none; }
+  .hero__tagline { left: 50%; transform: translateX(-50%); text-align: center; }
+}
+
+
+/* ============================================================
+   02 — WHAT WE DO
+   ============================================================ */
+
+.what { padding-block: clamp(5rem, 12vh, 10rem); }
+
+.what .shell {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 2.2fr);
+  gap: var(--sp-xl);
+  align-items: start;
+}
+
+/* Body copy, not a heading — Inter. Cinzel has no true lowercase, so
+   this paragraph set in the display face became 13 lines of Roman
+   capitals: striking for three words, unreadable for sixty. */
+.what__body {
+  font-family: var(--font-body);
+  font-weight: 300;
+  font-size: clamp(1.5rem, 2.6vw, 2.75rem);
+  line-height: 1.4;
+  letter-spacing: -0.01em;
+  color: inherit;
+}
+
+@media (max-width: 900px) {
+  .what .shell { grid-template-columns: 1fr; gap: var(--sp-lg); }
+}
+
+
+/* ============================================================
+   03 — SERVICES
+   ============================================================ */
+
+.services { padding-top: 0; }
+
+.services__grid {
+  max-width: var(--shell);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+  display: grid;
+  gap: clamp(4rem, 11vh, 10rem);
+}
+
+.svc {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+  gap: clamp(2rem, 4.5vw, 5.5rem);
+  align-items: center;
+}
+
+.svc--offset .svc__media { order: 2; }
+.svc--offset .svc__body  { order: 1; }
+
+.svc__media {
+  position: relative;
+  aspect-ratio: 5 / 4;
+  overflow: hidden;
+  border-radius: var(--radius);
+  background: var(--sand);
+}
+
+.svc__media img {
+  width: 100%;
+  height: 136%;
+  position: absolute;
+  top: -18%;
+  left: 0;
+  object-fit: cover;
+  will-change: transform;
+}
+
+.svc__body {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--sp-md);
+  max-width: 44ch;
+}
+
+.svc__index {
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 5vw, 5rem);
+  line-height: 1;
+  color: var(--clay);
+  opacity: 0.32;
+}
+
+.svc__body p { color: var(--page-fg-mid); }
+
+.svc__body .link { margin-top: var(--sp-sm); }
+
+@media (max-width: 900px) {
+  .svc { grid-template-columns: 1fr; gap: var(--sp-lg); }
+  .svc--offset .svc__media { order: 0; }
+  .svc--offset .svc__body  { order: 0; }
+}
+
+
+/* ============================================================
+   04 — HOW IT WORKS
+   Rule, small label, then the section title at wordmark scale, then
+   three equal columns: image, title, body. No background of its own.
+
+   The images carry a heavier parallax than the rest of the page
+   (data-parallax="12" against the usual 5), so they drift visibly as
+   the section passes. That is why the media boxes are 136% tall and
+   offset -18% — at 12% travel anything shorter slides off its frame.
+   ============================================================ */
+
+.how__intro {
+  padding-bottom: var(--sp-md);
+  border-bottom: 1px solid var(--page-line);
+}
+
+.how__heading {
+  margin-top: clamp(2.5rem, 8vh, 6rem);
+  font-size: var(--fs-d2);
+  line-height: 0.88;
+  text-transform: uppercase;
+  max-width: 7em;
+  text-wrap: balance;
+}
+
+.how__list {
+  list-style: none;
+  margin: clamp(3.5rem, 11vh, 9rem) 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(1.25rem, 2.4vw, 3rem);
+  align-items: start;
+}
+
+.how__media {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  border-radius: var(--radius);
+  background: var(--sand);
+}
+
+/* 136% / -18% gives the 12% travel room to move without gapping */
+.how__media img {
+  position: absolute;
+  top: -18%;
+  left: 0;
+  width: 100%;
+  height: 136%;
+  object-fit: cover;
+  will-change: transform;
+}
+
+.how__title {
+  margin-top: clamp(1.5rem, 3.5vh, 2.5rem);
+  font-size: clamp(1.5rem, 2.5vw, 2.6rem);
+  line-height: 1.08;
+}
+
+.how__body {
+  margin-top: var(--sp-md);
+  color: var(--page-fg-mid);
+  max-width: 42ch;
+}
+
+@media (max-width: 900px) {
+  .how__list {
+    grid-template-columns: 1fr;
+    gap: var(--sp-xl);
+  }
+
+  .how__heading { max-width: none; }
+  .how__media { aspect-ratio: 4 / 3; }
+}
+
+
+/* ============================================================
+   05 — MEET THE FOUNDER
+   Name across the measure, bio beneath it, then a CASCADE of three
+   photographs that step down the page at different sizes and
+   alignments — right, then smaller on the left, then centre. The
+   generous vertical gaps are the point: the section is meant to be
+   scrolled through, not taken in at once.
+
+   The page's ground turns from bone to night across the third
+   figure (.founder__figure--turn) — see js/theme.js.
+   No background of its own.
+   ============================================================ */
+
+.founder__name {
+  margin-top: var(--sp-xl);
+  font-size: var(--fs-d2);
+  line-height: 0.94;
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+
+.founder__intro {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--sp-lg);
+  margin-top: clamp(2rem, 5vh, 3.5rem);
+}
+
+.founder__bio {
+  max-width: 52ch;
+  font-size: var(--fs-lead);
+  line-height: 1.55;
+  color: var(--page-fg-mid);
+}
+
+/* ---- the cascade ------------------------------------------- */
+.founder__gallery {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: clamp(1rem, 2vw, 2.5rem);
+  margin-top: clamp(3rem, 9vh, 7rem);
+}
+
+.founder__figure {
+  margin: 0;
+  overflow: hidden;
+  border-radius: var(--radius);
+  background: var(--sand);
+}
+
+.founder__figure img {
+  position: relative;
+  top: -18%;
+  width: 100%;
+  height: 136%;
+  object-fit: cover;
+  will-change: transform;
+}
+
+/* founder (--a) only: her portrait, not founder3.
+
+   THE ACTUAL BUG: her face sits in roughly the top quarter of this
+   frame. As you scroll down the page, once ~24% of the frame's own
+   height has scrolled above the viewport, her face goes with it —
+   while most of the rest of the frame (her torso, the apron) is
+   still comfortably on screen. That's not really a parallax problem
+   or an object-fit problem, it's ordinary scrolling: any tall
+   element loses its top portion first. The fix that actually works
+   is cropping the photo TIGHTER around her face, so there is less
+   "dead" frame-height below her for the top quarter to be relative
+   to, and pushing what crop room exists toward showing more of the
+   top of the source (where she is) and less of the bottom (mostly
+   apron and background).
+
+   Two things had to change together to get there, both explained by
+   the same object-fit:cover arithmetic:
+
+   - The source is a clean 2:3 portrait (1024×1536) in a 4:5 frame.
+     Whether object-fit:cover crops this vertically AT ALL depends on
+     the box's own height as a percent of the frame — below 120% the
+     box is WIDTH-limited and cover crops vertically (usable); above
+     120% it's HEIGHT-limited and shows the entire source uncropped,
+     just scaled (object-position then has nothing to act on — this
+     is what 136%, the siblings' value, silently did here: showed her
+     whole photo with no crop at all, sliding a huge box around).
+   - The lower below 120% the box height goes, the MORE crop margin
+     becomes available for object-position to redistribute — at 114%
+     it was only ~50px, not enough to matter; at 110% it's ~180px+,
+     enough to meaningfully re-centre the visible window on her face.
+
+   Getting the box down to 110% meant dropping the parallax amount
+   again too (2, not 4 or the siblings' 12) — 110% only clears the
+   safe-height-for-travel minimum (100/(1-2×amount/100)) with real
+   margin at a gentler amount; 110% would be too tight a fit for 4%
+   travel. The drift is subtle now, not gone. */
+.founder__figure--a img {
+  top: -5%;
+  height: 110%;
+  object-position: center 0%;
+}
+
+/* right, tall */
+.founder__figure--a {
+  grid-column: 7 / 13;
+  aspect-ratio: 4 / 5;
+}
+
+/* centre, tall, dropped down — the ground has turned by the time this
+   is in view. Figure "b" (left, smaller) used to step between this
+   and figure a; removed from the page on request, so this is now a
+   two-step cascade instead of three. */
+.founder__figure--c {
+  grid-column: 5 / 11;
+  aspect-ratio: 4 / 5;
+  margin-top: clamp(3rem, 12vh, 9rem);
+}
+
+@media (max-width: 900px) {
+  .founder__gallery {
+    grid-template-columns: 1fr;
+    row-gap: var(--sp-xl);
+  }
+
+  .founder__figure--a,
+  .founder__figure--c {
+    grid-column: 1 / -1;
+    margin-top: 0;
+    aspect-ratio: 4 / 5;
+  }
+
+  .founder__figure--c { width: 90%; margin-left: auto; }
+}
+
+
+/* ============================================================
+   06/07 — WORK WITH US + LOCATIONS WE SERVE
+   Work With Us (06) is intro-only now — eyebrow, wordmark-scale
+   heading, copy, two buttons — its carousel was removed on request.
+   Locations We Serve (07) keeps the .gallery__pin/.gallery__track
+   carousel: a horizontally pinned photo track that scrolls sideways
+   as you scroll down. Both still share the .gallery__* rules below
+   (only .locations gets the 16/9 override further down), which is
+   why .gallery__pin's styles stay defined even though only one
+   section uses them today — the class shape is reused, not the
+   instance count.
+
+   Mechanics live in js/gallery.js, which inits one ScrollTrigger per
+   .gallery__pin found on the page (currently just one). No background
+   of its own — both sections sit after the ground has already turned
+   to night, so they read as one continuous dark passage with the
+   fork's old spot.
+   ============================================================ */
+
+.gallery { padding-bottom: 0; }
+
+.gallery__intro {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--sp-md);
+}
+
+.gallery__heading {
+  margin-top: clamp(1.5rem, 4vh, 2.5rem);
+  font-size: var(--fs-d2);
+  line-height: 0.92;
+  text-transform: uppercase;
+}
+
+.gallery__copy {
+  max-width: 48ch;
+  color: var(--page-fg-mid);
+}
+
+.gallery__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(1rem, 2vw, 1.5rem);
+  margin-top: var(--sp-sm);
+}
+
+/* ---- the carousel ------------------------------------------ */
+.gallery__pin {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  margin-top: clamp(3rem, 9vh, 6rem);
+}
+
+.gallery__track {
+  display: flex;
+  gap: clamp(1.25rem, 2.4vw, 2.5rem);
+  padding-inline: var(--gutter);
+  will-change: transform;
+}
+
+.gallery__card {
+  flex: 0 0 clamp(260px, 30vw, 420px);
+  margin: 0;
+}
+
+.gallery__media {
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  border-radius: var(--radius);
+  background: var(--sand);
+}
+
+.gallery__media img {
+  position: relative;
+  top: -18%;
+  width: 100%;
+  height: 136%;
+  object-fit: cover;
+  will-change: transform;
+}
+
+.gallery__cap {
+  margin-top: var(--sp-sm);
+  font-size: var(--fs-small);
+  color: var(--page-fg-mid);
+}
+
+/* Locations We Serve: landscape photography, not portraits — the
+   shared 4/5 card cropped these towns down to unrecognisable slivers.
+   Wider card + 16/9 media, scoped to this section only so Work With
+   Us keeps its portrait crop. */
+.locations .gallery__card { flex-basis: clamp(340px, 40vw, 620px); }
+.locations .gallery__media { aspect-ratio: 16 / 9; }
+
+/* The shared 136%/-18% overscan (sized for data-parallax="12") was
+   compounding with the 16/9 crop above: several of these source
+   photos are closer to 3/2 than 16/9, so cover already has to trim
+   top and bottom to fit the wide frame, and the extra 36% of parallax
+   travel room trimmed a second helping on top of that — mountains and
+   rooflines were going missing. Matched to a lighter data-parallax="6"
+   on these images in index.html (needs >=113.6%; 118% keeps the same
+   safety margin the sitewide default uses), the drift is smaller but
+   still visibly present, and each photo now shows its actual subject. */
+.locations .gallery__media img { top: -9%; height: 118%; }
+
+/* Touch and narrow screens: no pin, no scroll-jacking — a plain
+   swipeable row instead, which is what touch users expect anyway. */
+@media (hover: none), (max-width: 900px) {
+  .gallery__pin {
+    height: auto;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x proximity;
+  }
+
+  .gallery__track { padding-block: 0.5rem; }
+
+  .gallery__card { scroll-snap-align: start; }
+}
+
+
+/* ============================================================
+   08 — REVIEWS
+   Markup and behaviour (js/reviews.js) live here in home.css since
+   this is the section's home; the CSS itself moved to
+   components.css when hosts.html reused the same testimonial rows —
+   see the note there. No background of its own here; the page
+   ground is already dark by this point on the home page (it stays
+   bone throughout on hosts.html, and the review card's own colours
+   are fixed tokens either way, so nothing needed to change).
+   ============================================================ */
+
+
+
+/* ============================================================
+   09 — BRAND STATEMENT · full bleed, image only
+   Moved to after the reviews on request, and stripped of its quote
+   entirely — no copy over this image by design. It exists as a
+   breath between the testimonials and the closing footer, not as
+   another thing to read.
+   ============================================================ */
+
+.statement {
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.statement__media {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+}
+
+.statement__media img {
+  width: 100%;
+  height: 136%;
+  position: absolute;
+  top: -18%;
+  object-fit: cover;
+  will-change: transform;
+}
+
+.statement::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: rgba(28, 25, 23, 0.3);
+}

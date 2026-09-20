@@ -1,0 +1,124 @@
+/* ============================================================
+   Arrivals Provisions — Design tokens
+   Direction: "Desert Light" — bone ground, clay accent, ink type.
+   ============================================================ */
+
+:root {
+  /* ---- colour ------------------------------------------------ */
+  --paper:      #FBF9F5;   /* lightest surface */
+  --bone:       #F4F0E8;   /* page ground */
+  --sand:       #EAE3D6;   /* raised surface */
+  --dune:       #DED6C6;   /* hairline-adjacent fill */
+
+  --ink:        #1C1917;   /* primary type */
+  --ink-soft:   #46403A;   /* secondary type */
+  --stone:      #8A8172;   /* muted type, meta */
+
+  --clay:       #9A4A2E;   /* accent — red rock */
+  --clay-soft:  #B5623F;
+  --ember:      #C4703F;
+  /* clay let down with bone — the review card, and the only place
+     an accent fill appears on the page */
+  --blush:      #DDC6B9;
+
+  --line:       rgba(28, 25, 23, 0.14);
+  --line-soft:  rgba(28, 25, 23, 0.08);
+  --line-light: rgba(244, 240, 232, 0.28);
+
+  --shade:      rgba(28, 25, 23, 0.55);
+
+  /* ---- the page ground --------------------------------------
+     ONE ground for the whole site. Sections do not set their own
+     background or text colour — they inherit these, and js/theme.js
+     turns them from light to dark as you scroll. That is the only
+     colour change anywhere on the page.
+     Anything that hard-codes a section colour will break the turn. */
+  --page-bg:     #F4F0E8;
+  --page-fg:     #1C1917;
+  --page-fg-mid: #46403A;   /* body copy */
+  --page-fg-low: #8A8172;   /* eyebrows, meta */
+  --page-line:   rgba(28, 25, 23, 0.14);
+  --page-veil:   rgba(244, 240, 232, 0.86);   /* nav bar */
+
+  /* where the ground ends up once it has turned */
+  --night-bg:     #191715;
+  --night-fg:     #F4F0E8;
+  --night-fg-mid: rgba(244, 240, 232, 0.68);
+  --night-fg-low: rgba(244, 240, 232, 0.5);
+  --night-line:   rgba(244, 240, 232, 0.16);
+
+  /* ---- type -------------------------------------------------- */
+  /* Headings: Cinzel. Body: Inter.
+     Cinzel is Roman inscriptional capitals — it carries NO true
+     lowercase, so lowercase text renders as small caps. Every heading
+     on the site therefore reads as caps whatever case the markup uses.
+     Moranga stays first in the stack: drop its files into
+     assets/fonts/ and it takes over with no change here. */
+  --font-display: "Moranga", moranga, "Cinzel", Georgia, serif;
+  --font-body: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+
+  /* Was carrying the Fraunces SOFT/WONK axes. Cinzel has neither, so
+     this is now inert — kept so a future variable face can use it. */
+  --display-variations: normal;
+
+  /* fluid scale — min at 360px, max at 1600px */
+  --fs-hero:  clamp(3.4rem, 11.5vw, 12.5rem);
+  --fs-d1:    clamp(3rem, 7.5vw, 7.5rem);
+  --fs-d3:    clamp(1.9rem, 3.3vw, 3.2rem);
+  --fs-d007:  clamp(2.4rem, 6vw, 6rem);
+
+  /* The size every major section-opening heading shares — "How It
+     Works", "Two services. One standard.", "Work With Arrivals Provisions", the
+     founder's name. One value so they read as one system; change it
+     here rather than per section. Originally How It Works' own size,
+     applied everywhere on request. */
+  --fs-d2: clamp(3rem, 13vw, 13rem);
+  --fs-lead:  clamp(1.25rem, 1.9vw, 1.95rem);
+  --fs-body:  clamp(1.05rem, 1.18vw, 1.28rem);
+  --fs-small: clamp(0.9rem, 0.95vw, 1.05rem);
+  --fs-micro: clamp(0.78rem, 0.82vw, 0.9rem);
+
+  --lh-tight: 0.98;
+  --lh-snug:  1.14;
+  --lh-body:  1.68;
+
+  --track-eyebrow: 0.16em;
+
+  /* Display tracking. Every heading reads this one value, so a change
+     of heading face is a one-line adjustment. Cinzel is inscriptional
+     capitals and wants air between letters — the negative tracking
+     that suited a lowercase serif closes caps up and hurts them. */
+  --track-display: 0.02em;
+  --track-tight: var(--track-display);
+
+  /* ---- space ------------------------------------------------- */
+  /* Tight margins, Marquet-style: content runs close to the edges.
+     Two things were insetting it — an 88px gutter AND a 1520px cap on
+     the shell, which at 1920 left 200px of dead margin on each side
+     before the gutter even applied. The cap is now only a backstop for
+     very wide screens. */
+  --gutter: clamp(1.25rem, 2.6vw, 3.25rem);
+  --shell:  2200px;
+  --shell-narrow: 900px;
+
+  --sp-section: clamp(6rem, 14vh, 13rem);
+  --sp-xl: clamp(3.5rem, 7vw, 7rem);
+  --sp-lg: clamp(2.25rem, 4vw, 4rem);
+  --sp-md: 1.5rem;
+  --sp-sm: 0.75rem;
+
+  /* ---- motion ------------------------------------------------ */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.76, 0, 0.24, 1);
+  --dur-fast: 0.35s;
+  --dur: 0.7s;
+  --dur-slow: 1.2s;
+
+  /* ---- misc -------------------------------------------------- */
+  --radius: 2px;
+  --arch: 999px 999px 4px 4px;   /* adobe doorway */
+  --z-nav: 60;
+  --z-menu: 70;
+  --z-cursor: 90;
+  --z-curtain: 100;
+}
